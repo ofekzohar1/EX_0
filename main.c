@@ -1,62 +1,70 @@
 #include <stdio.h>
-#include <assert.h>
+#include <stdlib.h>
+#include <ctype.h>
 /* Define Constants */
 #define MAX_BASE 16
 #define MIN_BASE 2
 
 int a, b; /* Store the input base and desired base */
-int buildDecimalNum(); /* Convert number (user input) in a given base to decimal base */
+long buildDecimalNum(); /* Convert number (user input) in a given base to decimal base */
 int invalidBase(int base); /* Function checks whether the base is in range */
 int digitCalc(char digit); /* Calculates the numeric value of the char digit */
-void decToOtherBase(int decNum, int base); /* Calculates and print a given number in a desired base using recursion */
+void decToOtherBase(long decNum, int base); /* Calculates and print a given number in a desired base using recursion */
 
 int main() {
-    int decNum;
+    long decNum;
 
-    printf("Please enter the numbers base:");
+    printf("Please enter the numbers base:\n");
     scanf("%d", &a);
     if (invalidBase(a)) {
-        printf("Invalid input base");
+        printf("Invalid input base\n");
         return 0;
     }
 
-    printf("Please enter the desired base:");
+    printf("Please enter the desired base:\n");
     scanf("%d", &b);
     if (invalidBase(b)) {
-        printf("Invalid desired base");
+        printf("Invalid desired base\n");
         return 0;
     }
 
-    printf("Please enter a number in base %d:", a);
+    printf("Please enter a number in base %d:\n", a);
     decNum = buildDecimalNum();
     printf("The result is: ");
-    decToOtherBase(decNum, b);
+    if (decNum == 0 || b == 10)
+        printf("%ld", decNum);
+    else
+        decToOtherBase(decNum, b);
+    printf("\n");
 
     return 0;
 }
 
-int buildDecimalNum() {
-    int sum;
+long buildDecimalNum() {
+    long sum = 0;
     char digit;
 
-    getchar(); /* Clear the Input Buffer */
-    digit = getchar();
-    while (digit != '\n') {
-        sum = (sum * a) + digitCalc(digit);
+    /* Clear the Input Buffer */
+    do {
         digit = getchar();
-    }
+    } while (digit == '\n');
+
+    do {
+        sum = (sum * a) + digitCalc(tolower(digit));
+        digit = getchar();
+    } while (digit != '\n');
     return sum;
 }
 
-void decToOtherBase(int decNum, int base) {
+void decToOtherBase(long decNum, int base) {
     char digit;
 
     if (decNum != 0) {
         decToOtherBase(decNum / base, base);
 
         /* Calculate the digit value in char type */
-        if(decNum % base >= 10)
-            digit = (decNum % base) - 10 +'a';
+        if (decNum % base >= 10)
+            digit = (decNum % base) - 10 + 'a';
         else
             digit = decNum % base + '0';
         printf("%c", digit);
@@ -77,7 +85,7 @@ int digitCalc(char digit) {
 
     /* Out of base's digit range */
     if (decDigit < 0 || decDigit > (a - 1)) {
-        printf("Invalid number!");
+        printf("Invalid number!\n");
         exit(0); /* Terminate the program */
     }
     return decDigit;
