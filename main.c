@@ -6,13 +6,13 @@
 #define MIN_BASE 2
 
 int a, b; /* Store the input base and desired base */
-long buildDecimalNum(); /* Convert number (user input) in a given base to decimal base */
+unsigned long buildDecimalNum(); /* Convert number (user input) in a given base to decimal base */
 int invalidBase(int base); /* Function checks whether the base is in range */
 int digitCalc(char digit); /* Calculates the numeric value of the char digit */
-void decToOtherBase(long decNum, int base); /* Calculates and print a given number in a desired base using recursion */
+void decToOtherBase(unsigned long decNum, int base); /* Calculates and print a given number in a desired base using recursion */
 
 int main() {
-    long decNum;
+    unsigned long decNum;
 
     printf("Please enter the numbers base:\n");
     scanf("%d", &a);
@@ -40,8 +40,8 @@ int main() {
     return 0;
 }
 
-long buildDecimalNum() {
-    long sum = 0;
+unsigned long buildDecimalNum() {
+    unsigned long sum = 0;
     char digit;
 
     /* Clear the Input Buffer */
@@ -56,10 +56,10 @@ long buildDecimalNum() {
     return sum;
 }
 
-void decToOtherBase(long decNum, int base) {
+void decToOtherBase(unsigned long decNum, int base) {
     char digit;
 
-    if (decNum != 0) {
+    if (decNum > 0) {
         decToOtherBase(decNum / base, base);
 
         /* Calculate the digit value in char type */
